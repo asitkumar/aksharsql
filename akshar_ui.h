@@ -6,7 +6,6 @@
 #ifndef AKSHAR_UI_H
 #define AKSHAR_UI_H
 
-#include <gtk/gtk.h>
 #include "akshar.h"
 
 void setup_ui() {
@@ -37,7 +36,7 @@ void setup_ui() {
 	pasteItem = gtk_menu_item_new_with_label("Paste");
 	fontItem = gtk_menu_item_new_with_label("Font");
 	helpMeItem = gtk_menu_item_new_with_label("Help Me!");
-	aboutItem = gtk_menu_item_new_with_label("About Akshar..");
+	aboutItem = gtk_menu_item_new_with_label("About Akshar");
 	
 	gtk_menu_shell_append(GTK_MENU_SHELL(fileMenu),newItem);
 	gtk_menu_shell_append(GTK_MENU_SHELL(fileMenu),openItem);
@@ -75,6 +74,14 @@ void setup_ui() {
 	
 	gtk_box_pack_start(GTK_BOX(vbox),menuBar,FALSE,FALSE,0);
 	gtk_widget_show(menuBar);
+	
+	// Tool Bar
+	
+	// Database Explorer
+	
+	// Query Window
+	
+	// Table Panel
 	
 	// Display All Widgets
 	gtk_widget_show_all(window);

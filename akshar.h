@@ -8,6 +8,7 @@
 
 #include <gtk/gtk.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #define AKSHAR_NAME_VER 		"Akshar v1.0"
 //#define AKSHAR_MAIN_CONFIG 	"akshar_settings.cfg"

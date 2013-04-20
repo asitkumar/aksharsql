@@ -1,4 +1,3 @@
-#include <gtk/gtk.h>
 #include "akshar.h"
 #include "akshar_ui.h"
 #include "akshar_callbacks.h"
