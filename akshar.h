@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define AKSHAR_NAME_VER 		"Akshar v1.0"
+#define AKSHAR_NAME_VER 		"AksharSQL v1.0"
 //#define AKSHAR_MAIN_CONFIG 	"akshar_settings.cfg"
 
 // Main Window and Alignment Widgets
@@ -19,12 +19,17 @@ GtkWidget *vbox;
 
 // Menu Widgets
 GtkWidget *menuBar, *menu;
-GtkWidget *fileMenu, *editMenu, *toolsMenu, *helpMenu;
-GtkWidget *fileItem, *editItem, *toolsItem, *helpItem;
+GtkWidget *fileMenu, *editMenu, *helpMenu;
+GtkWidget *fileItem, *editItem, *helpItem;
 GtkWidget *newItem, *openItem, *saveItem, *saveAsItem, *exitItem; // File Menu
-GtkWidget *cutItem, *copyItem, *pasteItem, *fontItem; // Edit Menu
-// TO DO: Tools Menu
+GtkWidget *cutItem, *copyItem, *pasteItem, *prefsItem, *runItem, *cancelRunItem; // Edit Menu
 GtkWidget *helpMeItem, *aboutItem; // Help Menu
+
+// Toolbar Widgets
+GtkWidget *toolBar;
+GtkToolItem *tbNew, *tbOpen, *tbSave, *tbSaveAs;
+GtkToolItem *tbCut, *tbCopy, *tbPaste, *tbPrefs;
+GtkToolItem *tbRun, *tbCancelRun;
 
 // Buffers
 gchar *mainBuff;
