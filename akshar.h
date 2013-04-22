@@ -31,27 +31,20 @@ GtkToolItem *tbNew, *tbOpen, *tbSave, *tbSaveAs;
 GtkToolItem *tbCut, *tbCopy, *tbPaste, *tbPrefs;
 GtkToolItem *tbRun, *tbCancelRun;
 
+// Sql Editor Widgets
+GtkWidget *sqlEdit, *scrollWindow;
+GtkTextBuffer *sqlEditBuffer;
+GtkTextIter start, end;
+
+// Table
+GtkWidget *output, *scrollGrid;
+
 // Buffers
-gchar *mainBuff;
-gchar *dblBuff;
+gchar *buffer;
 
 // Other
-static int winWidth = 800;     // Main window width/height
-static int winHeight = 500;    // Main window width/height
-
-int init_memory() {
-	
-	mainBuff = (char *) malloc(1000);
-	dblBuff = (char *) malloc(1000);
-	
-	return TRUE;
-}
-
-void free_memory() {
-	
-	free(dblBuff);
-	free(mainBuff);
-}
+static int winWidth = 1000;    // Main window width/height
+static int winHeight = 600;    // Main window width/height
 
 #endif
 

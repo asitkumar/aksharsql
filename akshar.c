@@ -4,12 +4,9 @@
 #include "akshar_logic.h"
 
 int main(int argc,char **argv) {
-	
+
 	// Initialize GTK
 	gtk_init(&argc,&argv);
-	
-	// Allocate Memory
-	init_memory();
 	
 	// UI Setup Functions from 'akshar_ui.h'
 	setup_ui();
@@ -19,9 +16,6 @@ int main(int argc,char **argv) {
 	
 	// Business Logic from 'akshar_logic.h'
 	run_program();
-	
-	// Free Memory
-	free_memory();
 	
 	// The Application Loop. Here We Go! :D
 	gtk_main();
