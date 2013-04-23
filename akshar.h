@@ -37,14 +37,30 @@ GtkTextBuffer *sqlEditBuffer;
 GtkTextIter start, end;
 
 // Table
-GtkWidget *output, *scrollGrid;
+GtkWidget *scrollGrid;
+GtkListStore *store;
+GtkTreeIter iter;
+GtkCellRenderer     *renderer;
+GtkTreeModel        *model;
+GtkWidget           *view;
+GtkTreeViewColumn   *column;
+
+enum
+{
+  DEFCOL=0,
+  NCOLS
+};
 
 // Buffers
 gchar *buffer;
+char *temp;
 
 // Other
-static int winWidth = 1000;    // Main window width/height
-static int winHeight = 600;    // Main window width/height
+int winWidth = 1000;    // Main window width/height
+int winHeight = 600;    // Main window width/height
+
+// Miscellaneous
+int i, j, k;
 
 #endif
 

@@ -122,6 +122,8 @@ void setup_ui() {
 	// Query Window
 	sqlEdit = gtk_text_view_new();
 	scrollWindow = gtk_scrolled_window_new(NULL, NULL);
+	gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW(scrollWindow), GTK_SHADOW_ETCHED_IN);
+  gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrollWindow), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
 	
 	gtk_container_add(GTK_CONTAINER(scrollWindow), sqlEdit);
 	gtk_box_pack_start(GTK_BOX(vbox), scrollWindow, TRUE, TRUE, 0);
@@ -129,28 +131,34 @@ void setup_ui() {
 	sqlEditBuffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(sqlEdit));
 	
 	// Table Panel
-	output = gtk_table_new(1,3,FALSE);
-	scrollGrid = gtk_scrolled_window_new(NULL,NULL);
+	scrollGrid = gtk_scrolled_window_new(NULL, NULL);
+	gtk_scrolled_window_set_shadow_type(GTK_SCROLLED_WINDOW(scrollGrid), GTK_SHADOW_ETCHED_IN);
+  gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrollGrid), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+  
+  //store = gtk_list_store_new (NCOLS, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
+  store = gtk_list_store_new (NCOLS, G_TYPE_STRING);
+  for (i = 0; i < 9; i++) {
+	  gtk_list_store_append(store, &iter);
+	  gtk_list_store_set(store, &iter, DEFCOL, "      ", -1);
+	}
+
+	view = gtk_tree_view_new();
+	gtk_tree_view_set_rules_hint(GTK_TREE_VIEW(view), TRUE);
+  gtk_tree_view_set_search_column(GTK_TREE_VIEW(view), DEFCOL);
 	
-	gtk_container_add(GTK_CONTAINER(scrollGrid), output);
-	
-	GtkWidget *w1, *w2, *w3;
-	w1 = gtk_label_new("First");
-	w2 = gtk_label_new("Second");
-	w3 = gtk_label_new("Third");
-	
-	gtk_table_attach(GTK_TABLE(output), w1, 0, 1, 0, 1, GTK_EXPAND|GTK_SHRINK|GTK_FILL, GTK_EXPAND|GTK_SHRINK|GTK_FILL, 0, 0);
-	gtk_table_attach(GTK_TABLE(output), w2, 1, 2, 0, 1, GTK_EXPAND|GTK_SHRINK|GTK_FILL, GTK_EXPAND|GTK_SHRINK|GTK_FILL, 0, 0);
-	gtk_table_attach(GTK_TABLE(output), w3, 2, 3, 0, 1, GTK_EXPAND|GTK_SHRINK|GTK_FILL, GTK_EXPAND|GTK_SHRINK|GTK_FILL, 0, 0);
-	
-	gtk_widget_show(w1);
-	gtk_widget_show(w2);
-	gtk_widget_show(w3);
-	
-	gtk_widget_show(output);
-	gtk_widget_show(scrollGrid);
-	
-	gtk_box_pack_end(GTK_BOX(vbox), scrollGrid, TRUE, TRUE, 0);
+	renderer = gtk_cell_renderer_text_new();
+  gtk_tree_view_insert_column_with_attributes(GTK_TREE_VIEW(view), -1, "      ", renderer, "text", DEFCOL, NULL);
+  /*column = gtk_tree_view_column_new_with_attributes("Name", renderer, "text", NAME, NULL);
+  gtk_tree_view_column_set_sort_column_id(column, NAME);
+  gtk_tree_view_append_column(GTK_TREE_VIEW(view), column);*/
+  
+  model = GTK_TREE_MODEL(store);
+  
+  gtk_tree_view_set_model(GTK_TREE_VIEW(view), model);
+  g_object_unref(model);
+  
+  gtk_container_add(GTK_CONTAINER(scrollGrid), view);
+  gtk_box_pack_start(GTK_BOX(vbox), scrollGrid, TRUE, TRUE, 0);
 	
 	// Display All Widgets
 	gtk_widget_show_all(window);

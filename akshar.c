@@ -8,6 +8,9 @@ int main(int argc,char **argv) {
 	// Initialize GTK
 	gtk_init(&argc,&argv);
 	
+	// Initial Allocations
+	temp = (char *) malloc(1000);
+	
 	// UI Setup Functions from 'akshar_ui.h'
 	setup_ui();
 	
@@ -19,6 +22,10 @@ int main(int argc,char **argv) {
 	
 	// The Application Loop. Here We Go! :D
 	gtk_main();
+	
+	// Free Memory
+	free(temp);
+	
 	return 0;
 }
 
