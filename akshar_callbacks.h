@@ -10,6 +10,7 @@
 #include "akshar_utils.h"
 
 // Callback Prototypes //////////////////////////////////////
+
 static gboolean newItemHandler(GtkWidget *, GdkEvent *);
 static gboolean openItemHandler(GtkWidget *, GdkEvent *);
 static gboolean saveItemHandler(GtkWidget *, GdkEvent *);
@@ -23,6 +24,13 @@ static gboolean runItemHandler(GtkWidget *, GdkEvent *);
 static gboolean cancelRunItemHandler(GtkWidget *, GdkEvent *);
 static gboolean helpMeItemHandler(GtkWidget *, GdkEvent *);
 static gboolean aboutItemHandler(GtkWidget *, GdkEvent *);
+
+// Function Prototypes //////////////////////////////////////
+
+static gboolean createDb(const char *); 	// Return: TRUE on create successful; FALSE otherwise
+static gboolean openDb(const char *); 		// Return: TRUE on open successful; FALSE otherwise
+static gboolean writeDb();                // Return: TRUE on write successful; FALSE otherwise
+void sqlEngine();              						// Main SQL Engine
 
 void setup_callbacks() {
 	
@@ -57,11 +65,11 @@ void setup_callbacks() {
 	g_signal_connect(G_OBJECT(tbCancelRun), "clicked", G_CALLBACK(cancelRunItemHandler), NULL);
 }
 
-// Real callbacks //////////////////////////////////////////
+// Callbacks //////////////////////////////////////////
 
 static gboolean newItemHandler(GtkWidget *widget,GdkEvent *event) {
 
-	msgbox("sup? :D");
+	createDb("test.adb");
 	return TRUE;
 }
 static gboolean openItemHandler(GtkWidget *widget,GdkEvent *event) {
@@ -101,6 +109,66 @@ static gboolean helpMeItemHandler(GtkWidget *widget,GdkEvent *event) {
 	return TRUE;
 }
 static gboolean aboutItemHandler(GtkWidget *widget,GdkEvent *event) {
+	return TRUE;
+}
+
+// Logic Functions //////////////////////////////////////
+
+/* DB File Structure
+   -----------------
+   - 'Map Table Pointer' - 10 byte String pointing to offset of the 'Map Table'
+   - The 'Data Section'. Initially 1 byte in size
+   - The 'Holes Table'. Each entry- offset of the gap in 'Data Section' (10 bytes)
+       and length of the gap in bytes (10 bytes)
+   - The 'Map Table'. Holds the starting points of every cluster of a table
+ */
+ 
+static gboolean createDb(const char *fileName) {
+	
+	dbFile = fopen(fileName, "w");
+	
+	/* Map Table Pointer
+	*/
+	sprintf(buffer, "0000000012");  // 12 at start
+	
+	/* Data Section
+	   ------------
+	   Data Section is made of "Table Clusters". Each cluster holds some amount of
+	   data for a table. Multiple scattered clusters can exist for a table most probably
+	   because of data being added later to an existing table.
+	   
+	   [Hypothetical Scenario: Fields for every data type in a Table]
+		   - Table..
+		     ---------------------------------------------------------
+		     | Code | Data Type                                      |
+		     ---------------------------------------------------------
+		   	 | 01   | CHAR        _/ Data Offset Address  (10 Bytes),|
+		   	 | 02   | BINARY       \ Data Length in bytes (10 Bytes) |
+		   	 | 03   | INT         _/ Constant Space                  |
+		   	 | 04   | FLOAT        \                                 |
+		   	 | 05   | DATETIME                                       |
+		   	 ---------------------------------------------------------
+		   - Table..
+		   - Table..
+		   - .......
+		 
+		 The "Code" takes 2 bytes of space before a field entry. For Reference type fields Char
+		 and Binary they are placed before Offset Address+Data Length=20 bytes. For Value type
+		 fields these 2 bytes are placed before the data.
+	*/
+	sprintf(temp,"%d", 0);
+	strncat(buffer, temp, strlen(temp));
+	
+	/* The Map Section
+	   ---------------
+		 - For Each Table Cluster Entry (Could be more than one entry for one table):
+		 	 - [Table Cluster Offset Address (10 bytes)]
+		 	 - [Table Cluster Length in bytes (10 bytes)]
+	*/
+	
+	fwrite(buffer, strlen(buffer), sizeof(char), dbFile);
+	
+	fclose(dbFile);
 	return TRUE;
 }
 

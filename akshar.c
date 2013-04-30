@@ -1,7 +1,6 @@
 #include "akshar.h"
 #include "akshar_ui.h"
 #include "akshar_callbacks.h"
-#include "akshar_logic.h"
 
 int main(int argc,char **argv) {
 
@@ -9,6 +8,7 @@ int main(int argc,char **argv) {
 	gtk_init(&argc,&argv);
 	
 	// Initial Allocations
+	buffer = (char *) malloc(1000);
 	temp = (char *) malloc(1000);
 	
 	// UI Setup Functions from 'akshar_ui.h'
@@ -17,14 +17,12 @@ int main(int argc,char **argv) {
 	// Callback Functions from 'akshar_callbacks.h'
 	setup_callbacks();
 	
-	// Business Logic from 'akshar_logic.h'
-	run_program();
-	
 	// The Application Loop. Here We Go! :D
 	gtk_main();
 	
 	// Free Memory
 	free(temp);
+	free(buffer);
 	
 	return 0;
 }
